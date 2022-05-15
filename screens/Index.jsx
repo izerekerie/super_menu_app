@@ -1,10 +1,13 @@
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Index = () => {
+const Index = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Index</Text>
+<TouchableOpacity onPress={()=> navigation.navigate('TabNavigation')}>
+    <Text> touch me</Text>
+</TouchableOpacity>
     </View>
   )
 }
