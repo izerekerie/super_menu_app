@@ -1,23 +1,32 @@
-import { SearchBar } from 'react-native-elements';
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, TextInput,Text, View } from 'react-native';
+import Navigation from './navigation';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-export default class App extends React.Component {
-  state = {
-    search: '',
-  };
 
-  updateSearch = (search) => {
-    this.setState({ search });
-  };
+export default function App() {
 
-  render() {
-    const { search } = this.state;
 
-    return (
-      <SearchBar
-        placeholder="Type Here..."
-        onChangeText={this.updateSearch}
-        value={search}
-      />
-    );
-  }
+  return (
+    <SafeAreaProvider >
+     
+      
+      <Navigation/>
+      <StatusBar style="auto" />
+     
+    </SafeAreaProvider>
+    
+  );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  input:{
+    borderColor: '#000',
+  },
+});
