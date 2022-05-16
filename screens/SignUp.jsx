@@ -6,7 +6,7 @@ const SignUp = () => {
   return (
     <View style={{backgroundColor:'#F7941D'}}>
       <View style={styles.maindiv}>
-      <Text style={{fontWeight:90}}>SupaMenu</Text>
+      <Text style={{fontWeight:90}}>Supa <Text style={{color:'#F7941D'}}>Menu</Text></Text>
       <Text style={{fontSize:'bold'}}>
         Welcome .....
       </Text>
@@ -33,6 +33,19 @@ const SignUp = () => {
 
 </View>
   </View>
+  <Text> If you have a PMG account</Text>
+
+  <Button style={{backgroundColor:'#F7941D'}}> 
+      
+      <Text style={styles.buttonText}>
+      Sign In
+      </Text>
+      </Button>
+
+      <View> Dont have account 
+        <Text style={{color:'F7941D'}}>Register</Text>
+      </View>
+
     </View>
     </View>
   )

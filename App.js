@@ -1,5 +1,6 @@
 import React from 'react'
 import SignUp from './screens/SignUp'
+import { View, Text, StyleSheet,TouchableOpacity } from 'react-native'
 
 const App = () => {
   return (

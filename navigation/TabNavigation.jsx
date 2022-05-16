@@ -1,6 +1,10 @@
 import React from 'react';
 import { Feather, AntDesign } from "react-native-vector-icons";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { Ionicons,MaterialCommunityIcons,Entypo   } from '@expo/vector-icons'; 
+
+import Index from '../screens/Index';
+import Checkout from '../screens/Checkout';
 
 const Tab = createBottomTabNavigator();
 
@@ -8,64 +12,82 @@ const TabNavigation = ({route}) => {
 
     return (
         <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: "#EC6448",
-        inactiveTintColor:"#000000",
-        tabStyle: {
-          margin: 10,
+        screenOptions={{
+        tabBarActiveTintColor: "#F7941D",
+        tabBarInactiveTintColor:"#000000",
+        tabBarStyle:{
+            backgroundColor:'#fff',
+            borderTopLeftRadius: 35,
+            borderTopRightRadius: 35,
+            padding: 7,
+            height:70,  
+            width:'100%',
+            shadowColor: "#000",
+            shadowOffset: {
+                width: 0,
+                height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            
+            elevation: 5,
         },
-        labelStyle:{
-          fontSize:11,
+        labelStyle:{                               
+          fontSize:10,
         },
         style: {
           height: 70,
+          backgroundColor:'#000',
         },
+        showLabel: false,
+        headerShown:false,
+        tabBarShowLabel:false
       }}
     >
       <Tab.Screen
-        name="Discover"
-        component={DiscoverStack}
+        name="Home"
+        component={Index}
         options={() => ({
           tabBarIcon: ({ color, size }) => (
-            <Feather color={color} size={size} name="compass" />
+            <Ionicons name="home-outline" size={size} color={color} />
           ),
         })}
       />
       <Tab.Screen
-        name="Search"
-        component={SearchStack}
+        name="Notifications"
+        component={Index}
         options={{
           tabBarIcon: ({ color, size}) => (
-            <Feather color={color} size={size} name="search" />
+            <Ionicons name="md-notifications-outline" size={size} color={color} />
           ),
         }}
       />
       <Tab.Screen
-        name="Design"
-        component={DesignStack}
+        name="Scan"
+        component={Index}
         options={({route}) => ({
           tabBarIcon: ({ color, size }) => (
-            <Feather color={color} size={size} name="plus"/>
+            <MaterialCommunityIcons name="credit-card-scan-outline" size={size} color={color} />
           ),
           
         })}
       />
     <Tab.Screen
-        name="Shop"
-        component={ShopStack}
+        name="Timer"
+        component={Index}
         options={{
           tabBarIcon: ({ color, size}) => (
-            <Feather color={color} size={size} name="shopping-cart" />
+            <Entypo name="back-in-time" size={size} color={color} />
           ),
         }}
         
       />
       <Tab.Screen
-        name="Account"
-        component={AccountStack}
+        name="Cart"
+        component={Checkout}
         options={{
           tabBarIcon: ({ color, size }) => (
-            <Feather color={color} size={size} name="user"/>
+            <MaterialCommunityIcons name="cart-outline" size={size} color={color} />
           ),
         }}
       />
