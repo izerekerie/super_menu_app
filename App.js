@@ -3,16 +3,17 @@ import { StyleSheet, Text, View } from 'react-native';
 import Navigation from './navigation';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-export default function App() {
+const App = () => {
   return (
     <SafeAreaProvider >
-      <Navigation/>
-      {/* <Text>Open up App.js to start working on your app!</Text> */}
-      <StatusBar style="auto" />
-    </SafeAreaProvider>
-    
-  );
+    <Navigation/>
+    {/* <Text>Open up App.js to start working on your app!</Text> */}
+    <StatusBar style="auto" />
+  </SafeAreaProvider>
+  )
 }
+
+export default App
 
 const styles = StyleSheet.create({
   container: {
