@@ -11,7 +11,7 @@ import Svg, { Path } from "react-native-svg";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { FontAwesome5 } from "@expo/vector-icons";
-const Login = () => {
+const Login = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}></View>
@@ -98,6 +98,7 @@ const Login = () => {
               <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
             </View>
             <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
+          
           </View>
 
           {/* medias */}
@@ -129,7 +130,7 @@ const Login = () => {
             <Text>
               {" "}
               Don't have an account?{" "}
-              <Text style={{ color: "#F7941D", fontWeight: "bold" }}>
+              <Text style={{ color: "#F7941D", fontWeight: "bold" }} onPress={()=>navigation.navigate('SignUp')}>
                 Register
               </Text>
             </Text>

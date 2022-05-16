@@ -12,7 +12,7 @@ import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 
-const SignUp = () => {
+const SignUp = ({navigation}) => {
   return (
     <View style={styles.container}>
       {/* <View style={styles.madivin}>
@@ -137,12 +137,19 @@ const SignUp = () => {
             </View>
 
             <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
+           
+          </View>
+          <View style={{alignItems:'center'}}>
+          <Text style={{ color: "grey",marginLeft:30 }}>if you have a PGM account</Text>
           </View>
 
           <View>
-            <Pressable style={styles.button}>
-              <Text style={{ paddingTop: 5, color: "white" }}>Sign In</Text>
+            <Pressable style={styles.button} >
+              <Text style={{ paddingTop: 5, color: "white" }} onPress={()=>navigation.navigate('Login') }>Sign In</Text>
             </Pressable>
+            <Text style={{color:'gray',marginLeft:100}}>Don't have account? 
+            <Text style={{color:"#F7941D"}} onPress={()=>navigation.navigate('SignUp') }> Register</Text>
+            </Text>
           </View>
         </View>
       </View>
@@ -207,14 +214,22 @@ const styles = StyleSheet.create({
     borderColor: "#DADAD9",
   },
   button: {
-    borderRadius: 15,
+    borderRadius: 17,
     alignItems: "center",
     justifyContent: "center",
     marginVertical: 10,
     paddingVertical: 12,
     paddingHorizontal: 32,
     borderRadius: 4,
-    elevation: 3,
     backgroundColor: "#F7941D",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 10,
+    },
+    shadowOpacity: 0.5,
+    shadowRadius: 12.35,
+
+    elevation: 19,
   },
 });
