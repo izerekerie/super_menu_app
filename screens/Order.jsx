@@ -5,7 +5,7 @@ import OrderDeals from '../components/orderDeals';
 
 const Order = () => {
   return (
-    <View>
+    <View style={styles.all}>
         <View style={styles.backIcon}>
                 <AntDesign name="left" size={24} color="#F7941D" style={{alignSelf:'center',paddingTop:6}}/>
         </View>
@@ -19,6 +19,10 @@ const Order = () => {
 export default Order;
 
 const styles =  StyleSheet.create({
+  all:{
+    backgroundColor: '#ffffff',
+    flex: 1
+  },
     backIcon:{
         backgroundColor: '#edf0f5',
         width: 36,
@@ -30,14 +34,16 @@ const styles =  StyleSheet.create({
         color:'black',
         fontSize: 20,
         alignSelf: 'flex-end',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        marginRight: 40
         
     },
     type:{
         color: '#F7941D',
         fontSize: 16,
         alignSelf: 'flex-end',
-        marginTop: 4
+        marginTop: 4,
+        marginRight: 40
     }
 
 
