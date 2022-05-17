@@ -13,25 +13,9 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 
 const SignUp = ({navigation}) => {
+  
   return (
     <View style={styles.container}>
-      {/* <View style={styles.madivin}>
-        <Text style={{ fontWeight: "bold" }}>SupaMenu</Text>
-        <Text style={{ fontSize: 30 }}>Welcome .....</Text>
-        <Text>please fill in the information</Text>
-        <TextInput placeholder="Full Name" styles={styles.input}></TextInput>
-        <TextInput placeholder="Phone Number"></TextInput>
-        <TextInput placeholder="Your email"></TextInput>
-
-        <Button style={{ backgroundColor: "#F7941D" }} title="Proceed"/>
-        <View style={styles.lineStyle}>
-          <View style={{ flex: 1, height: 1, backgroundColor: "black" }}>
-            <View>
-              <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
-            </View>
-          </View>
-        </View>
-      </View> */}
       <View style={{ flex: 1 }}></View>
       <View style={styles.maindiv}>
         <View style={{ alignItems: "center", marginVertical: 20 }}>
