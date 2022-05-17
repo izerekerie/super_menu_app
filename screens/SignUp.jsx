@@ -11,27 +11,15 @@ import Svg, { Path } from "react-native-svg";
 import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
+import { useState } from "react";
 
-const SignUp = ({navigation}) => {
+const SignUp = ({ navigation }) => {
+  const [isProceed, setProceed] = useState(false);
+  const [data, setData] = useState({
+    firstName:'',lastName:'',email:'',mobile:'',password:''
+  })
   return (
     <View style={styles.container}>
-      {/* <View style={styles.madivin}>
-        <Text style={{ fontWeight: "bold" }}>SupaMenu</Text>
-        <Text style={{ fontSize: 30 }}>Welcome .....</Text>
-        <Text>please fill in the information</Text>
-        <TextInput placeholder="Full Name" styles={styles.input}></TextInput>
-        <TextInput placeholder="Phone Number"></TextInput>
-        <TextInput placeholder="Your email"></TextInput>
-
-        <Button style={{ backgroundColor: "#F7941D" }} title="Proceed"/>
-        <View style={styles.lineStyle}>
-          <View style={{ flex: 1, height: 1, backgroundColor: "black" }}>
-            <View>
-              <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
-            </View>
-          </View>
-        </View>
-      </View> */}
       <View style={{ flex: 1 }}></View>
       <View style={styles.maindiv}>
         <View style={{ alignItems: "center", marginVertical: 20 }}>
@@ -61,75 +49,130 @@ const SignUp = ({navigation}) => {
         </View>
         {/* form */}
         <View style={{ paddingHorizontal: 20 }}>
-          <View style={styles.inputStyle}>
-            <Feather
-              name="user"
-              size={24}
-              color="grey"
-              style={{ marginRight: 10 }}
-            />
-            <TextInput
-              placeholder="Full name"
-              style={[
-                styles.textInput,
-                {
-                  color: "black",
-                },
-              ]}
-              placeholderTextColor={"grey"}
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
+          {!isProceed ? (
+            <>
+              <View style={styles.inputStyle}>
+                <Feather
+                  name="user"
+                  size={24}
+                  color="grey"
+                  style={{ marginRight: 10 }}
+                />
+                <TextInput
+                  placeholder="First name"
+                  style={[
+                    styles.textInput,
+                    {
+                      color: "black",
+                    },
+                  ]}
+                  placeholderTextColor={"grey"}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  value={data.firstName}
+                  onChange={(value)=>setData(...data,firstName=value)}
+                />
+              </View>
+              <View style={styles.inputStyle}>
+                <Feather
+                  name="user"
+                  size={24}
+                  color="grey"
+                  style={{ marginRight: 10 }}
+                />
+                <TextInput
+                  placeholder="Last name"
+                  style={[
+                    styles.textInput,
+                    {
+                      color: "black",
+                    },
+                  ]}
+                  placeholderTextColor={"grey"}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  value={data.lastName}
+                  onChange={(value)=>setData(...data,lastName=value)}
+                />
+              </View>
+              <View style={styles.inputStyle}>
+                <MaterialCommunityIcons
+                  name="phone"
+                  size={24}
+                  color="grey"
+                  style={{ marginRight: 10 }}
+                />
+                <TextInput
+                  placeholder="Phone Number"
+                  style={[
+                    styles.textInput,
+                    {
+                      color: "black",
+                    },
+                  ]}
+                  placeholderTextColor={"grey"}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  value={data.mobile}
+                  onChange={(value)=>setData(...data,mobile=value)}
+                />
+              </View>
+            </>
+          ) : (
+            <>
+              <View style={styles.inputStyle}>
+                <Octicons
+                  name="mail"
+                  size={24}
+                  color="grey"
+                  style={{ marginRight: 10 }}
+                />
 
-          <View style={styles.inputStyle}>
-            <MaterialCommunityIcons
-              name="phone"
-              size={24}
-              color="grey"
-              style={{ marginRight: 10 }}
-            />
-            <TextInput
-              placeholder="Phone Number"
-              style={[
-                styles.textInput,
-                {
-                  color: "black",
-                },
-              ]}
-              placeholderTextColor={"grey"}
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
-          <View style={styles.inputStyle}>
-            <Octicons
-              name="mail"
-              size={24}
-              color="grey"
-              style={{ marginRight: 10 }}
-            />
+                <TextInput
+                  placeholder="Mail"
+                  style={[
+                    styles.textInput,
+                    {
+                      color: "black",
+                    },
+                  ]}
+                  placeholderTextColor={"grey"}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  value={data.email}
+                  onChange={(value)=>setData(...data,email=value)}
+                />
+              </View>
+              <View style={styles.inputStyle}>
+                <Octicons
+                  name="mail"
+                  size={24}
+                  color="grey"
+                  style={{ marginRight: 10 }}
+                />
 
-            <TextInput
-              placeholder="Mail"
-              style={[
-                styles.textInput,
-                {
-                  color: "black",
-                },
-              ]}
-              placeholderTextColor={"grey"}
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
-          <View>
-            <Pressable style={styles.button}>
+                <TextInput
+                  placeholder="Password"
+                  style={[
+                    styles.textInput,
+                    {
+                      color: "black",
+                    },
+                  ]}
+                  placeholderTextColor={"grey"}
+                  autoCapitalize="none"
+                  returnKeyType="next"
+                  value={data.password}
+                  onChange={(value)=>setData(...data,password=value)}
+                />
+              </View>
+            </>
+          )}
+           {!isProceed?( <View>
+            <Pressable onPress={() => setProceed(true)} style={styles.button}>
               <Text style={{ paddingTop: 5, color: "white" }}>Proceed</Text>
             </Pressable>
-          </View>
-
-          <View style={styles.lineStyle}>
+            <View style={styles.lineStyle}>
             <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
 
             <View>
@@ -137,18 +180,36 @@ const SignUp = ({navigation}) => {
             </View>
 
             <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
-           
           </View>
-          <View style={{alignItems:'center'}}>
-          <Text style={{ color: "grey",marginLeft:30 }}>if you have a PGM account</Text>
+          
+          <View style={{ alignItems: "center" }}>
+            <Text style={{ color: "grey", marginLeft: 30 }}>
+              if you have a PGM account
+            </Text>
           </View>
+          </View>):null}
+         
+
+        
 
           <View>
-            <Pressable style={styles.button} >
-              <Text style={{ paddingTop: 5, color: "white" }} onPress={()=>navigation.navigate('Login') }>Sign In</Text>
+            <Pressable style={styles.button}>
+              <Text
+                style={{ paddingTop: 5, color: "white" }}
+                onPress={() => navigation.navigate("Login")}
+              >
+                Sign Up
+              </Text>
             </Pressable>
-            <Text style={{color:'gray',marginLeft:100}}>Don't have account? 
-            <Text style={{color:"#F7941D"}} onPress={()=>navigation.navigate('SignUp') }> Register</Text>
+            <Text style={{ color: "gray", marginLeft: 100 }}>
+              Already have account?
+              <Text
+                style={{ color: "#F7941D" }}
+                onPress={() => navigation.navigate("SignUp")}
+              >
+                {" "}
+                Signin
+              </Text>
             </Text>
           </View>
         </View>
