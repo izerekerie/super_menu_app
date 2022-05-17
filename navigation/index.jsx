@@ -15,18 +15,18 @@ const Stack = createNativeStackNavigator();
 export default function Navigation(){
     return(
         <NavigationContainer>
-        <Stack.Navigator initialRouteName='rateService'>
+        <Stack.Navigator initialRouteName='Index'>
+          
+      <Stack.Screen name="Index" component={Index} options={{headerShown: false}}/>
         <Stack.Screen name="rateService" component={rateService} options={{headerShown: false}}/>
         <Stack.Screen name="paySuccess" component={PaySuccess} options={{headerShown: false}}/>
         <Stack.Screen name="Menu" component={Menu} options={{headerShown: false}}/>
         
-      <Stack.Screen name="Index" component={Index} options={{headerShown: false}}/>
       <Stack.Screen name="Home" component={Home} options={{headerShown: false}}/>
           
       <Stack.Screen name="SignUp" component={SignUp} options={{headerShown: false}}/>
       <Stack.Screen name="Login" component={Login} options={{headerShown:false}}/>
       <Stack.Screen name="TabNavigation" component={TabNavigation} options={{headerShown: false}}/>
-      <Stack.Screen name="Index" component={Index} options={{headerShown: false}}/>
     
     </Stack.Navigator>
       </NavigationContainer>

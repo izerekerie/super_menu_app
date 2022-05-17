@@ -1,9 +1,9 @@
-import { View, Text , StyleSheet, SafeAreaView, Image} from 'react-native'
+import { View, Text , StyleSheet, SafeAreaView, Image, Pressable} from 'react-native'
 import React from 'react'
 import { Ionicons,Fontisto  } from '@expo/vector-icons'; 
 import { StatusBar } from 'expo-status-bar';
 
-const Checkout = () => {
+const Checkout = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
          <StatusBar backgroundColor='#fff' />
@@ -58,10 +58,12 @@ elevation: 3,}}>
               <Text style={{textAlign:'center',fontSize:14,color:'#ccc'}}>
                 We will send you an order details to your email after the successful payment
               </Text>
+              <Pressable onPress={()=>navigation.navigate('paySuccess')}>
               <View style={{backgroundColor:'#25d482',flexDirection:'row',justifyContent:'center',height:50,alignItems:'center',borderRadius:15,marginTop:10}}>
               <Fontisto name="locked" size={20} color="white" />
               <Text style={{fontSize:18,color:'#fff',fontWeight:'bold',marginLeft:9}}>Pay for the order</Text>
               </View>
+              </Pressable>
           </View>
       </View>
     </SafeAreaView>

@@ -12,7 +12,7 @@ const Index = ({navigation}) => {
             alignItems:'center',
             justifyContent:'center'
             }}
-            onPress={()=>navigation.navigate('Home')}
+            onPress={()=>navigation.navigate('Login')}
             >
         <Text style={{fontSize:30,color:'#000',fontWeight:"bold"}}>Supa</Text>
         <Text style={{fontSize:30,color:'#fff',fontWeight:"bold"}}>Menu</Text>
