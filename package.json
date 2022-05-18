@@ -23,21 +23,15 @@
     "native-base": "^3.4.5",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "react-native": "0.68.2",
+    "react-native": "^0.68.2",
     "react-native-gesture-handler": "~2.1.0",
-    "react-native-ratings": "^8.1.0",
-    "react-native-redux": "^1.0.11",
+    "react-native-input-spinner": "^1.7.12",
+    "react-native-numeric-input": "^1.9.1",
     "react-native-safe-area-context": "4.2.4",
     "react-native-screens": "~3.11.1",
-    "react-native-svg": "^12.3.0",
-    "react-native-vector-icons": "^8.1.0",
+    "react-native-vector-icons": "^9.1.0",
     "react-native-web": "0.17.7",
-    "react-redux": "^7.2.4",
-    "redux": "^4.1.0",
-    "redux-persist": "^6.0.0",
-    "redux-thunk": "^2.3.0",
-    "webpack-dev-server": "~3.11.0",
-    "yup": "^0.32.11"
+    "request": "^2.79.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
