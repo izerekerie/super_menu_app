@@ -32,4 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  input:{
+    borderColor: '#000',
+  },
 });
