@@ -1,17 +1,53 @@
 import {
   View,
   Text,
-  TextInput,
   StyleSheet,
   Pressable,
-  Image
 } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import Svg, { Path } from "react-native-svg";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
-import { FontAwesome5 } from "@expo/vector-icons";
-const Login = ({navigation}) => {
+import * as authActions from "../store/actions/auth";
+import { Formik, Field } from "formik";
+import CustomInput from "../components/CustomInput";
+import * as yup from "yup";
+import { useDispatch } from "react-redux";
+
+const signUpValidationSchema = yup.object().shape({
+  login: yup
+    .string()
+    .email("Please enter valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, "Password must have a small letter")
+    .matches(/\w*[A-Z]\w*/, "Password must have a capital letter")
+    .matches(/\d/, "Password must have a number")
+    .matches(
+      /[!@#$%^&*()\-_"=+{}; :,<.>]/,
+      "Password must have a special character"
+    )
+    .min(8, ({ min }) => `Passowrd must be at least ${min} characters`)
+    .required("Password is required"),
+});
+
+const Login = ({ navigation }) => {
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (data) => {
+    setLoading(true);
+
+    try {
+      await dispatch(authActions.signin(data));
+      navigation.navigate("Home");
+    } catch (err) {
+      setErrortext(err.message);
+      setLoading(false);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}></View>
@@ -41,112 +77,136 @@ const Login = ({navigation}) => {
           </Text>
           <Text style={{ color: "grey" }}>Sign in to continue</Text>
         </View>
-        {/* form */}
-        <View style={{ paddingHorizontal: 20 }}>
-          <View style={styles.inputStyle}>
-            <Octicons
-              name="mail"
-              size={24}
-              color="grey"
-              style={{ marginRight: 10 }}
-            />
+        <Formik
+          validationSchema={signUpValidationSchema}
+          initialValues={{
+            login: "",
+            password: ""
+          }}
+          onSubmit={(values) => handleSubmit(values)}
+        >
+          {({ handleSubmit, isValid, values }) => (
+            <>
+              <View style={{ paddingHorizontal: 20 }}>
+                <Field
+                  component={CustomInput}
+                  name="login"
+                  placeholder="Email Address"
+                  keyboardType="email-address"
+                  style={{ justifyContent: "center" }}
+                />
+                <Field
+                  component={CustomInput}
+                  name="password"
+                  placeholder="Password"
+                  secureTextEntry
+                  style={{ justifyContent: "center" }}
+                />
 
-            <TextInput
-              placeholder="Your Email"
-              style={[
-                styles.textInput,
-                {
-                  color: "black",
-                },
-              ]}
-              placeholderTextColor={"grey"}
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
-          <View style={styles.inputStyle}>
-            <MaterialCommunityIcons
-              name="lock-outline"
-              size={24}
-              color="grey"
-              style={{ marginRight: 10 }}
-            />
+                <View>
+                  <Pressable
+                    style={styles.button}
+                    onPress={handleSubmit}
+                  >
+                    <Text style={{ paddingTop: 5, color: "white" }}>
+                      Sign In
+                    </Text>
+                  </Pressable>
+                </View>
 
-            <TextInput
-              placeholder="Password"
-              style={[
-                styles.textInput,
-                {
-                  color: "black",
-                },
-              ]}
-              placeholderTextColor={"grey"}
-              autoCapitalize="none"
-              returnKeyType="next"
-            />
-          </View>
+                <View style={styles.lineStyle}>
+                  <View
+                    style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                  />
+                  <View>
+                    <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
+                  </View>
+                  <View
+                    style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                  />
+                </View>
+                <View>
+                  <View style={styles.inputStyle}>
+                    <Svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ marginTop: -10 }}
+                    >
+                      <Path
+                        d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z"
+                        fill="white"
+                      />
+                      <Path
+                        d="M24 17.6213C25.9529 17.6213 27.2702 18.4649 28.0214 19.1698L30.9565 16.304C29.1538 14.6284 26.808 13.6 24 13.6C19.9325 13.6 16.4196 15.9342 14.7094 19.3315L18.072 21.9431C18.9156 19.4355 21.2498 17.6213 24 17.6213Z"
+                        fill="#EA4335"
+                      />
+                      <Path
+                        d="M33.984 24.2311C33.984 23.376 33.9147 22.752 33.7644 22.1049H24V25.9644H29.7316C29.616 26.9235 28.992 28.368 27.6053 29.3386L30.8871 31.8809C32.8516 30.0666 33.984 27.3973 33.984 24.2311Z"
+                        fill="#4285F4"
+                      />
+                      <Path
+                        d="M18.0836 26.0569C17.864 25.4098 17.7369 24.7164 17.7369 24C17.7369 23.2835 17.864 22.5902 18.072 21.9431L14.7093 19.3315C14.0045 20.7413 13.6 22.3244 13.6 24C13.6 25.6755 14.0045 27.2587 14.7093 28.6684L18.0836 26.0569Z"
+                        fill="#FBBC05"
+                      />
+                      <Path
+                        d="M24 34.4C26.808 34.4 29.1653 33.4756 30.8871 31.8809L27.6053 29.3387C26.7271 29.9511 25.5484 30.3787 24 30.3787C21.2498 30.3787 18.9156 28.5644 18.0836 26.0569L14.7209 28.6684C16.4311 32.0658 19.9324 34.4 24 34.4Z"
+                        fill="#34A853"
+                      />
+                    </Svg>
+                    <Pressable style={{ width: "70%", alignItems: "center" }}>
+                      <Text style={{ paddingTop: 5, color: "gray" }}>
+                        Login with Google
+                      </Text>
+                    </Pressable>
+                  </View>
+                  <View style={styles.inputStyle}>
+                    <Svg
+                      width="48"
+                      height="48"
+                      viewBox="0 0 48 48"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      style={{ marginTop: -10 }}
+                    >
+                      <Path
+                        d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z"
+                        fill="#ffffff"
+                      />
+                      <Path
+                        d="M26.5015 38.1115V25.0542H30.1059L30.5836 20.5546H26.5015L26.5077 18.3025C26.5077 17.1289 26.6192 16.5001 28.3048 16.5001H30.5581V12H26.9532C22.6231 12 21.0991 14.1828 21.0991 17.8536V20.5551H18.4V25.0547H21.0991V38.1115H26.5015Z"
+                        fill="#4092ff"
+                      />
+                    </Svg>
 
-          <View>
-            <Pressable style={styles.button} onPress={()=>navigation.navigate('Home')}>
-              <Text style={{ paddingTop: 5, color: "white" }}>Sign In</Text>
-            </Pressable>
-          </View>
-
-          <View style={styles.lineStyle}>
-            <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
-            <View>
-              <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
-            </View>
-            <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
-          
-          </View>
-
-          {/* medias */}
-          {/* Youry */}
-          {/* [{flexDirection:'row', alignItems:'center',borderWidth:1 ,borderColor:'gray',paddingVertical:10, paddingHorizontal: 10}] */}
-          <View>
-          <View style={styles.inputStyle}>
-          <Svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginTop:-10}}>
-<Path d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z" fill="white"/>
-<Path d="M24 17.6213C25.9529 17.6213 27.2702 18.4649 28.0214 19.1698L30.9565 16.304C29.1538 14.6284 26.808 13.6 24 13.6C19.9325 13.6 16.4196 15.9342 14.7094 19.3315L18.072 21.9431C18.9156 19.4355 21.2498 17.6213 24 17.6213Z" fill="#EA4335"/>
-<Path d="M33.984 24.2311C33.984 23.376 33.9147 22.752 33.7644 22.1049H24V25.9644H29.7316C29.616 26.9235 28.992 28.368 27.6053 29.3386L30.8871 31.8809C32.8516 30.0666 33.984 27.3973 33.984 24.2311Z" fill="#4285F4"/>
-<Path d="M18.0836 26.0569C17.864 25.4098 17.7369 24.7164 17.7369 24C17.7369 23.2835 17.864 22.5902 18.072 21.9431L14.7093 19.3315C14.0045 20.7413 13.6 22.3244 13.6 24C13.6 25.6755 14.0045 27.2587 14.7093 28.6684L18.0836 26.0569Z" fill="#FBBC05"/>
-<Path d="M24 34.4C26.808 34.4 29.1653 33.4756 30.8871 31.8809L27.6053 29.3387C26.7271 29.9511 25.5484 30.3787 24 30.3787C21.2498 30.3787 18.9156 28.5644 18.0836 26.0569L14.7209 28.6684C16.4311 32.0658 19.9324 34.4 24 34.4Z" fill="#34A853"/>
-</Svg>
-              <Pressable  style={{width:'70%',alignItems:'center'}}>
-               
-                <Text style={{ paddingTop: 5 ,color:'gray'}}>Login with Google</Text>
-              </Pressable>
-            </View>
-            <View style={styles.inputStyle}>
-            {/* <FontAwesome5 name="facebook-f" size={24} color="#4092ff" /> */}
-            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"  style={{marginTop:-10}}>
-<path d="M0 24C0 10.7452 10.7452 0 24 0C37.2548 0 48 10.7452 48 24C48 37.2548 37.2548 48 24 48C10.7452 48 0 37.2548 0 24Z" fill="#ffffff"/>
-<path d="M26.5015 38.1115V25.0542H30.1059L30.5836 20.5546H26.5015L26.5077 18.3025C26.5077 17.1289 26.6192 16.5001 28.3048 16.5001H30.5581V12H26.9532C22.6231 12 21.0991 14.1828 21.0991 17.8536V20.5551H18.4V25.0547H21.0991V38.1115H26.5015Z" fill="#4092ff"/>
-</svg>
-
-              <Pressable style={{width:'70%',alignItems:'center'}}  >
-               
-                <Text style={{ paddingTop: 5 ,color:'gray'}}>Login with Facebook</Text>
-              </Pressable>
-            </View>
-          
-        
-          </View>
-          {/* finalthings */}
-          <View style={styles.titleContainer}>
-            <Text style={{ color: "#F7941D", marginBottom: 7 }}>
-              Forgot Password?
-            </Text>
-            <Text>
-              {" "}
-              Don't have an account?{" "}
-              <Text style={{ color: "#F7941D", fontWeight: "bold" }} onPress={()=>navigation.navigate('SignUp')}>
-                Register
-              </Text>
-            </Text>
-          </View>
-        </View>
+                    <Pressable style={{ width: "70%", alignItems: "center" }}>
+                      <Text style={{ paddingTop: 5, color: "gray" }}>
+                        Login with Facebook
+                      </Text>
+                    </Pressable>
+                  </View>
+                </View>
+                <View style={styles.titleContainer}>
+                  <Text style={{ color: "#F7941D", marginBottom: 7 }}>
+                    Forgot Password?
+                  </Text>
+                  <Text>
+                    {" "}
+                    Don't have an account?{" "}
+                    <Text
+                      style={{ color: "#F7941D", fontWeight: "bold" }}
+                      onPress={() => navigation.navigate("SignUp")}
+                    >
+                      Register
+                    </Text>
+                  </Text>
+                </View>
+              </View>
+            </>
+          )}
+        </Formik>
       </View>
     </View>
   );
@@ -213,8 +273,7 @@ const styles = StyleSheet.create({
     elevation: 19,
   },
   loginMedia: {
-   borderWidth:2,
-   borderColor:'gray',
-   
+    borderWidth: 2,
+    borderColor: "gray",
   },
 });

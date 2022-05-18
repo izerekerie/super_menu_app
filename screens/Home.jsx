@@ -12,7 +12,6 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={{ marginTop: 8 }}>
-        <Pressable onPress={() => navigation.navigate("TabNavigation")}>
           <View
             style={{
               marginTop: 100,
@@ -36,11 +35,9 @@ const Home = ({ navigation }) => {
               value=""
               placeholder="Search your preferred restaurent"
               style={{ flex: 1 }}
-
-              // onChangeText={onSearch}
+              onPressIn={() => navigation.navigate("TabNavigation")}
             />
           </View>
-        </Pressable>
         <View
           style={{
             flexDirection: "row",

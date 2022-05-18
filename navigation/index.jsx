@@ -6,7 +6,7 @@ import Index from '../screens/Index';
 import Home from '../screens/Home';
 import Menu from '../screens/Menu';
 import PaySuccess from '../screens/PaySuccess';
-import rateService from '../screens/rateService';
+import RateService from '../screens/RateService';
 import TabNavigation from './TabNavigation';
 import SignUp from '../screens/SignUp';
 import Login from '../screens/Login';
@@ -18,7 +18,7 @@ export default function Navigation(){
         <Stack.Navigator initialRouteName='Index'>
           
       <Stack.Screen name="Index" component={Index} options={{headerShown: false}}/>
-        <Stack.Screen name="rateService" component={rateService} options={{headerShown: false}}/>
+        <Stack.Screen name="rateService" component={RateService} options={{headerShown: false}}/>
         <Stack.Screen name="paySuccess" component={PaySuccess} options={{headerShown: false}}/>
         <Stack.Screen name="Menu" component={Menu} options={{headerShown: false}}/>
         

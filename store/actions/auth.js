@@ -7,8 +7,9 @@ import axios from 'axios';
 
 export const signup = (data) => {
   return async dispatch => {
-      let res = await axios.post(`${baseUrl}/auth/client/signup`, data);
-      const resData = await res.data;
+      const res = await axios.post(`${baseUrl}/auth/client/signup`, data);
+      const resData = res.data;
+      
       if(!resData.success){
         throw new Error(resData.message);
       }
@@ -18,19 +19,24 @@ export const signup = (data) => {
 
 export const signin = (data) => {
   return async dispatch => {
-    
       let res = await axios.post(`${baseUrl}/auth/signin`, data);
-     
       const resData = res.data;
-      if(!resData.success){
-        throw new Error(resData.message);
+
+      if(res.error){
+        throw new Error(res.error);
       }
       const token = resData.token.accessToken;
-     
-        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-      
-        dispatch({ type:SIGNIN , token, resData});
+      const user = {
+        id: resData.id,
+        firstName: resData.firstName,
+        lastName: resData.lastName,
+        username: resData.username,
+        mobile: resData.mobile,
+        email: resData.email
+      }
+      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      dispatch({ type:SIGNIN , token, user});
   };
 };
 

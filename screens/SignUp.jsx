@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Button,
   Pressable,
+  Alert,
+  ScrollView,
 } from "react-native";
 import React from "react";
 import Svg, { Path } from "react-native-svg";
@@ -12,16 +14,67 @@ import { Feather } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { Octicons } from "@expo/vector-icons";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import * as authActions from "../store/actions/auth";
+import { Formik, Field } from "formik";
+import CustomInput from "../components/CustomInput";
+import * as yup from "yup";
+
+const signUpValidationSchema = yup.object().shape({
+  firstName: yup.string().required("Full name is required"),
+  lastName: yup.string().required("Full name is required"),
+  mobile: yup
+    .string()
+    .matches(/(07)(\d){8}\b/, "Enter a valid phone number")
+    .required("Phone number is required"),
+  email: yup
+    .string()
+    .email("Please enter valid email")
+    .required("Email is required"),
+  password: yup
+    .string()
+    .matches(/\w*[a-z]\w*/, "Password must have a small letter")
+    .matches(/\w*[A-Z]\w*/, "Password must have a capital letter")
+    .matches(/\d/, "Password must have a number")
+    .matches(
+      /[!@#$%^&*()\-_"=+{}; :,<.>]/,
+      "Password must have a special character"
+    )
+    .min(8, ({ min }) => `Passowrd must be at least ${min} characters`)
+    .required("Password is required"),
+});
 
 const SignUp = ({ navigation }) => {
   const [isProceed, setProceed] = useState(false);
-  const [data, setData] = useState({
-    firstName:'',lastName:'',email:'',mobile:'',password:''
-  })
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState(null);
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (data) => {
+    setLoading(true);
+
+    try {
+      await dispatch(authActions.signup(data));
+      Alert.alert(
+        "Registration Successful",
+        "user have been registred successfully",
+        [{ text: "Ok", onPress: () => navigation.navigate("Login") }],
+        { cancelable: false }
+      );
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+      } else {
+        setErrortext(err.message);
+        setLoading(false);
+      }
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={{ flex: 1 }}></View>
-      <View style={styles.maindiv}>
+      <ScrollView style={styles.maindiv}>
         <View style={{ alignItems: "center", marginVertical: 20 }}>
           <Svg
             width="200"
@@ -48,172 +101,151 @@ const SignUp = ({ navigation }) => {
           <Text style={{ color: "grey" }}>please fill in the information</Text>
         </View>
         {/* form */}
-        <View style={{ paddingHorizontal: 20 }}>
-          {!isProceed ? (
+        <Formik
+          validationSchema={signUpValidationSchema}
+          initialValues={{
+            firstName: "",
+            lastName: "",
+            email: "",
+            mobile: "",
+            password: "",
+          }}
+          onSubmit={(values) => handleSubmit(values)}
+        >
+          {({ handleSubmit, isValid, values }) => (
             <>
-              <View style={styles.inputStyle}>
-                <Feather
-                  name="user"
-                  size={24}
-                  color="grey"
-                  style={{ marginRight: 10 }}
-                />
-                <TextInput
-                  placeholder="First name"
-                  style={[
-                    styles.textInput,
-                    {
-                      color: "black",
-                    },
-                  ]}
-                  placeholderTextColor={"grey"}
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  value={data.firstName}
-                  onChange={(value)=>setData(...data,firstName=value)}
-                />
-              </View>
-              <View style={styles.inputStyle}>
-                <Feather
-                  name="user"
-                  size={24}
-                  color="grey"
-                  style={{ marginRight: 10 }}
-                />
-                <TextInput
-                  placeholder="Last name"
-                  style={[
-                    styles.textInput,
-                    {
-                      color: "black",
-                    },
-                  ]}
-                  placeholderTextColor={"grey"}
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  value={data.lastName}
-                  onChange={(value)=>setData(...data,lastName=value)}
-                />
-              </View>
-              <View style={styles.inputStyle}>
-                <MaterialCommunityIcons
-                  name="phone"
-                  size={24}
-                  color="grey"
-                  style={{ marginRight: 10 }}
-                />
-                <TextInput
-                  placeholder="Phone Number"
-                  style={[
-                    styles.textInput,
-                    {
-                      color: "black",
-                    },
-                  ]}
-                  placeholderTextColor={"grey"}
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  value={data.mobile}
-                  onChange={(value)=>setData(...data,mobile=value)}
-                />
-              </View>
-            </>
-          ) : (
-            <>
-              <View style={styles.inputStyle}>
-                <Octicons
-                  name="mail"
-                  size={24}
-                  color="grey"
-                  style={{ marginRight: 10 }}
-                />
+              <View style={{ paddingHorizontal: 20 }}>
+                {!isProceed ? (
+                  <>
+                    <Field
+                      component={CustomInput}
+                      name="firstName"
+                      placeholder="First Name"
+                      style={{ justifyContent: "center" }}
+                    />
+                    <Field
+                      component={CustomInput}
+                      name="lastName"
+                      placeholder="Last Name"
+                      style={{ justifyContent: "center" }}
+                    />
+                    <Field
+                      component={CustomInput}
+                      name="email"
+                      placeholder="Email Address"
+                      keyboardType="email-address"
+                      style={{ justifyContent: "center" }}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <Field
+                      component={CustomInput}
+                      name="mobile"
+                      placeholder="Phone Number"
+                      keyboardType="numeric"
+                      style={{ justifyContent: "center" }}
+                    />
+                    <Field
+                      component={CustomInput}
+                      name="password"
+                      placeholder="Password"
+                      secureTextEntry
+                      style={{ justifyContent: "center" }}
+                    />
+                  </>
+                )}
 
-                <TextInput
-                  placeholder="Mail"
-                  style={[
-                    styles.textInput,
-                    {
-                      color: "black",
-                    },
-                  ]}
-                  placeholderTextColor={"grey"}
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  value={data.email}
-                  onChange={(value)=>setData(...data,email=value)}
-                />
-              </View>
-              <View style={styles.inputStyle}>
-                <Octicons
-                  name="mail"
-                  size={24}
-                  color="grey"
-                  style={{ marginRight: 10 }}
-                />
+                {!isProceed ? (
+                  <View>
+                    <Pressable
+                      onPress={() => setProceed(true)}
+                      style={styles.button}
+                    >
+                      <Text style={{ paddingTop: 5, color: "white" }}>
+                        Proceed
+                      </Text>
+                    </Pressable>
+                    <View style={styles.lineStyle}>
+                      <View
+                        style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                      />
 
-                <TextInput
-                  placeholder="Password"
-                  style={[
-                    styles.textInput,
-                    {
-                      color: "black",
-                    },
-                  ]}
-                  placeholderTextColor={"grey"}
-                  autoCapitalize="none"
-                  returnKeyType="next"
-                  value={data.password}
-                  onChange={(value)=>setData(...data,password=value)}
-                />
+                      <View>
+                        <Text style={{ textAlign: "center", width: 50 }}>
+                          {" "}
+                          OR{" "}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                      />
+                    </View>
+
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ color: "grey", marginLeft: 30 }}>
+                        if you have a PGM account
+                      </Text>
+                    </View>
+                  </View>
+                ) : (
+                  <View>
+                    <Pressable
+                      onPress={() => setProceed(false)}
+                      style={styles.button}
+                    >
+                      <Text style={{ paddingTop: 5, color: "white" }}>
+                        back
+                      </Text>
+                    </Pressable>
+                    <View style={styles.lineStyle}>
+                      <View
+                        style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                      />
+
+                      <View>
+                        <Text style={{ textAlign: "center", width: 50 }}>
+                          {" "}
+                          OR{" "}
+                        </Text>
+                      </View>
+
+                      <View
+                        style={{ flex: 1, height: 1, backgroundColor: "grey" }}
+                      />
+                    </View>
+
+                    <View style={{ alignItems: "center" }}>
+                      <Text style={{ color: "grey", marginLeft: 30 }}>
+                        if you have a PGM account
+                      </Text>
+                    </View>
+                  </View>
+                )}
+
+                <View>
+                  <Pressable style={styles.button} onPress={handleSubmit}>
+                    <Text style={{ paddingTop: 5, color: "white" }}>
+                      Sign Up
+                    </Text>
+                  </Pressable>
+                  <Text style={{ color: "gray", marginLeft: 100 }}>
+                    Already have account?
+                    <Text
+                      style={{ color: "#F7941D" ,fontWeight:'bold'}}
+                      onPress={() => navigation.navigate("Login")}
+                    >
+                      {" "}
+                      Sign in
+                    </Text>
+                  </Text>
+                </View>
               </View>
             </>
           )}
-           {!isProceed?( <View>
-            <Pressable onPress={() => setProceed(true)} style={styles.button}>
-              <Text style={{ paddingTop: 5, color: "white" }}>Proceed</Text>
-            </Pressable>
-            <View style={styles.lineStyle}>
-            <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
-
-            <View>
-              <Text style={{ textAlign: "center", width: 50 }}> OR </Text>
-            </View>
-
-            <View style={{ flex: 1, height: 1, backgroundColor: "grey" }} />
-          </View>
-          
-          <View style={{ alignItems: "center" }}>
-            <Text style={{ color: "grey", marginLeft: 30 }}>
-              if you have a PGM account
-            </Text>
-          </View>
-          </View>):null}
-         
-
-        
-
-          <View>
-            <Pressable style={styles.button}>
-              <Text
-                style={{ paddingTop: 5, color: "white" }}
-                onPress={() => navigation.navigate("Login")}
-              >
-                Sign Up
-              </Text>
-            </Pressable>
-            <Text style={{ color: "gray", marginLeft: 100 }}>
-              Already have account?
-              <Text
-                style={{ color: "#F7941D" }}
-                onPress={() => navigation.navigate("SignUp")}
-              >
-                {" "}
-                Signin
-              </Text>
-            </Text>
-          </View>
-        </View>
-      </View>
+        </Formik>
+      </ScrollView>
     </View>
   );
 };
@@ -258,7 +290,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   maindiv: {
-    flex: 3,
+    // flex: 3,
+    height: "60%",
     backgroundColor: "white",
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
@@ -292,5 +325,10 @@ const styles = StyleSheet.create({
     shadowRadius: 12.35,
 
     elevation: 19,
+  },
+  errorTextStyle: {
+    color: "red",
+    textAlign: "center",
+    fontSize: 14,
   },
 });
