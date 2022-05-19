@@ -1,9 +1,40 @@
 import { View, Text, StyleSheet, TextInput , ScrollView} from 'react-native'
 import { AntDesign } from '@expo/vector-icons'; 
 import RestResult from '../components/RestResult';
+import { useDispatch , useSelector } from 'react-redux';
+import React,{useEffect,useState,useCallback} from 'react';
+import * as ServiceProviderAction from '../store/actions/serviceProvider';
 
 import React from 'react'
 const Search = () => {
+  
+const serviceProvider = useSelector(state => state.serviceProvider.availableServiceProviders);
+const dispatch = useDispatch();
+const [isLoading, setIsLoading] = useState(false);
+const [isRefreshing, setIsRefreshing] = useState(false);
+const [error, setError] = useState();
+
+const loadServiceProvider = useCallback(async () => {
+  setError(null);
+  setIsRefreshing(true);
+  try {
+    await dispatch(ServiceProviderAction.fetchServiceProviders());
+  } catch (err) {
+    console.log(err.message);
+    setError(err.message);
+  }
+  setIsRefreshing(false);
+}, [dispatch, setIsLoading, setError]);
+
+
+useEffect(() => {
+  setIsLoading(true);
+  loadServiceProvider().then(() => {
+    setIsLoading(false);
+  });
+}, [dispatch, loadServiceProvider]);
+
+
     return (
       <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop:10 }}>

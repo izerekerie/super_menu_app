@@ -7,12 +7,22 @@ import Index from "../screens/Index";
 import Checkout from "../screens/Checkout";
 import PaySuccess from "../screens/PaySuccess";
 import { createStackNavigator } from "@react-navigation/stack";
+import Search from "../screens/Search";
+import Menu from "../screens/Menu";
+import Home from "../screens/Home";
+import Order from "../screens/Order";
+import RateService from "../screens/RateService";
 
 const Stack = createStackNavigator();
 
 const Cart = () =>{
   return (
-    <Stack.Navigator initialRouteName="Checkout">
+    <Stack.Navigator initialRouteName="order">
+        <Stack.Screen
+        name="order"
+        component={Order}
+        options={{ headerShown: false }}
+      />
       <Stack.Screen
         name="Checkout"
         component={Checkout}
@@ -26,6 +36,24 @@ const Cart = () =>{
     </Stack.Navigator>
   );
 }
+
+const SearchStack = () =>{
+  return (
+    <Stack.Navigator initialRouteName="Search">
+      <Stack.Screen
+        name="Search"
+        component={Search}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Menu"
+        component={Menu}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 
 const Tab = createBottomTabNavigator();
 
@@ -60,7 +88,7 @@ const TabNavigation = ({ route }) => {
     >
       <Tab.Screen
         name="Home"
-        component={Checkout}
+        component={Home}
         options={() => ({
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home-outline" size={size} color={color} />
@@ -82,7 +110,7 @@ const TabNavigation = ({ route }) => {
       />
       <Tab.Screen
         name="Scan"
-        component={Checkout}
+        component={SearchStack}
         options={({ route }) => ({
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons
@@ -95,7 +123,7 @@ const TabNavigation = ({ route }) => {
       />
       <Tab.Screen
         name="Timer"
-        component={Checkout}
+        component={RateService}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="back-in-time" size={size} color={color} />
