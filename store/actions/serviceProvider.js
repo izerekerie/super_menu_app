@@ -7,12 +7,7 @@ export const fetchServiceProviders = () => {
     try {
         const ServiceProviders = await axios.get(`${baseUrl}/service-providers?page=0&size=30`);
         const resData = ServiceProviders.data.content;
-        // const loadedServiceProviders = [];
-
-        // for (const key in resData) {
-        //     loadedServiceProviders.push(resData[key]);
-        // }
-        console.log(resData);
+        // console.log(resData);
           dispatch({
             type: SET_SERVICEPROVIDERS,
             serviceProviders: resData,

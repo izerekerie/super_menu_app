@@ -5,7 +5,6 @@ import { useDispatch , useSelector } from 'react-redux';
 import React,{useEffect,useState,useCallback} from 'react';
 import * as ServiceProviderAction from '../store/actions/serviceProvider';
 
-import React from 'react'
 const Search = () => {
   
 const serviceProvider = useSelector(state => state.serviceProvider.availableServiceProviders);
@@ -33,7 +32,7 @@ useEffect(() => {
     setIsLoading(false);
   });
 }, [dispatch, loadServiceProvider]);
-
+console.log(serviceProvider.length)
 
     return (
       <View style={styles.container}>
