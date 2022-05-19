@@ -1,7 +1,7 @@
 import { View, Text , StyleSheet} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react'
-import OrderDeals from '../components/orderDeals';
+import OrderDeals from '../components/OrderDeals';
 
 const Order = () => {
   return (
