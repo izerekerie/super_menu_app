@@ -5,7 +5,7 @@ import { useDispatch , useSelector } from 'react-redux';
 import React,{useEffect,useState,useCallback} from 'react';
 import * as ServiceProviderAction from '../store/actions/serviceProvider';
 
-const Search = () => {
+const Search = ({navigation}) => {
   
 const serviceProvider = useSelector(state => state.serviceProvider.availableServiceProviders);
 const dispatch = useDispatch();
@@ -54,7 +54,7 @@ useEffect(() => {
             <ScrollView style={{paddingHorizontal:20}}>
               {serviceProvider.map((data, index)=>{
                 return(
-                  <RestResult key={index} name={data.name} email={data.email} address={data.address}/>
+                  <RestResult key={index} name={data.name} email={data.email} address={data.address} navigation={navigation}/>
                 )
               })}
             </ScrollView>
