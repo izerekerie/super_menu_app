@@ -32,8 +32,6 @@ useEffect(() => {
     setIsLoading(false);
   });
 }, [dispatch, loadServiceProvider]);
-console.log(serviceProvider.length)
-
     return (
       <View style={styles.container}>
             <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop:10 }}>
@@ -42,7 +40,6 @@ console.log(serviceProvider.length)
                 </View>
                 <TextInput
                 style={styles.input}
-                // onChangeText={onChangeText}
                 placeholder=" Search..."/>
             </View>
       <View
@@ -54,13 +51,12 @@ console.log(serviceProvider.length)
         <View>
                 <Text style={styles.nearbyText}>Nearby Restaurant</Text>
             </View>
-            <ScrollView>
-                <RestResult/>
-                <RestResult/>
-                <RestResult/>
-                <RestResult/>
-                <RestResult/>
-                <RestResult/>
+            <ScrollView style={{paddingHorizontal:20}}>
+              {serviceProvider.map((data, index)=>{
+                return(
+                  <RestResult key={index} name={data.name} email={data.email} address={data.address}/>
+                )
+              })}
             </ScrollView>
       </View>
       
@@ -73,7 +69,7 @@ const styles =  StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#fff',
-        marginTop: 20
+        marginTop: 20,
       },
       input:{
         height: 50,
