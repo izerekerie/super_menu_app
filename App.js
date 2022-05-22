@@ -7,6 +7,7 @@ import serviceProvider from "./store/reducer/serviceProvider";
 import ReduxThunk from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from 'react-redux';
+
 const rootReducer = combineReducers({
   auth: authReducer,
   serviceProvider:serviceProvider
