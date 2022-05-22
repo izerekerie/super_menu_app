@@ -1,8 +1,11 @@
 import { View, StyleSheet,Text,SafeAreaView,FlatList ,Image} from 'react-native'
-import React from 'react'
+import React from 'react';
+import { useEffect } from 'react';
+import { useSelector,useDispatch } from 'react-redux';
+import { getall } from '../store/actions/menu';
 import MenuItem from '../components/MenuItem';
 const Menu = () => {
-
+ const dispatch=useDispatch();
   const menuList=[
     {id:1,name: 'Appetizer'},
     {id:2,name: 'Starter'},
@@ -13,6 +16,23 @@ const Menu = () => {
     {id:3,name: 'Dessert'},
     {id:4,name: 'Drink'},
   ]
+
+  const  callGetall=async()=>{
+    try{
+      await    
+      console.log('dispatch')
+    }catch(error){
+      console.error();
+    }
+
+  }
+  useEffect (() => {
+    dispatch(getall());
+
+ }, [dispatch])
+
+ const items= useSelector((state)=>state.menuReducer.items);  
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',margin:20}}>
@@ -35,10 +55,10 @@ const Menu = () => {
       </View>
 
     <FlatList
-    data={menuList}
+    data={items}
     keyExtractor={(item=>item.id)}
     showsVerticalScrollIndicator={false}
-    renderItem={({item})=><MenuItem data={item}/>}
+    renderItem={({item})=><MenuItem data={item.name}/>}
     />
 
      

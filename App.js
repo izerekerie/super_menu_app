@@ -4,13 +4,15 @@ import Navigation from "./navigation";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import authReducer from "./store/reducer/auth";
 import serviceProvider from "./store/reducer/serviceProvider";
+import menuReducer from "./store/reducer/menu";
 import ReduxThunk from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from 'react-redux';
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  serviceProvider:serviceProvider
+  serviceProvider:serviceProvider,
+ menuReducer:menuReducer
 });
 
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));

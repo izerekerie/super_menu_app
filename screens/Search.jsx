@@ -6,7 +6,7 @@ import React,{useEffect,useState,useCallback} from 'react';
 import * as ServiceProviderAction from '../store/actions/serviceProvider';
 import filter from 'lodash.filter';
 
-const Search = () => {
+const Search = ({navigation}) => {
   
 const serviceProviders = useSelector(state => state.serviceProvider.availableServiceProviders);
 const dispatch = useDispatch();
@@ -101,7 +101,8 @@ if (isLoading) {
             <ScrollView style={{paddingHorizontal:20}}>
               {data.map((item, index)=>{
                 return(
-                  <RestResult key={index} name={item.name} email={item.email} address={item.address}/>
+                  <RestResult key={index} name={data.name} email={data.email} address={data.address} navigation={navigation}/>
+
                 )
               })}
             </ScrollView>
