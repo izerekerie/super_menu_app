@@ -1,18 +1,19 @@
-import { View, Text , StyleSheet} from 'react-native';
+import { View, Text , StyleSheet, ScrollView,StatusBar} from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react'
 import OrderDeals from '../components/OrderDeals';
 
-const Order = () => {
+const Order = ({navigation}) => {
   return (
-    <View style={styles.all}>
+    <ScrollView style={styles.all}>
+      <StatusBar style="auto" backgroundColor={'#ffffff'} />
         <View style={styles.backIcon}>
                 <AntDesign name="left" size={24} color="#F7941D" style={{alignSelf:'center',paddingTop:6}}/>
         </View>
       <Text style={styles.restName}>Choose Kigali</Text>
       <Text style={styles.type}>Drinks</Text>
-      <OrderDeals/>
-    </View>
+      <OrderDeals navigation={navigation}/>
+    </ScrollView>
     
   )
 }
@@ -21,7 +22,9 @@ export default Order;
 const styles =  StyleSheet.create({
   all:{
     backgroundColor: '#ffffff',
-    flex: 1
+    paddingTop: StatusBar.currentHeight,
+    height:'100%',
+    paddingHorizontal:20
   },
     backIcon:{
         backgroundColor: '#edf0f5',

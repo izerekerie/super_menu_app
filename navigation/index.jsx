@@ -15,7 +15,7 @@ const Stack = createNativeStackNavigator();
 export default function Navigation(){
     return(
         <NavigationContainer>
-        <Stack.Navigator initialRouteName='Index'>
+        <Stack.Navigator initialRouteName='Login'>
           
       <Stack.Screen name="Index" component={Index} options={{headerShown: false}}/>
         <Stack.Screen name="rateService" component={RateService} options={{headerShown: false}}/>
