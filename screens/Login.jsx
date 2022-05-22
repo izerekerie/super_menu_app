@@ -12,6 +12,7 @@ import CustomInput from "../components/CustomInput";
 import * as yup from "yup";
 import { useDispatch } from "react-redux";
 
+
 const signUpValidationSchema = yup.object().shape({
   login: yup
     .string()
@@ -106,7 +107,7 @@ const Login = ({ navigation }) => {
                 <View>
                   <Pressable
                     style={styles.button}
-                    onPress={handleSubmit}
+                    onPress={()=>navigation.navigate("TabNavigation")}
                   >
                     <Text style={{ paddingTop: 5, color: "white" }}>
                       Sign In

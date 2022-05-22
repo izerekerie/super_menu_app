@@ -12,6 +12,7 @@ import Menu from "../screens/Menu";
 import Home from "../screens/Home";
 import Order from "../screens/Order";
 import RateService from "../screens/RateService";
+import Notification from "../screens/Notification";
 
 const Stack = createStackNavigator();
 
@@ -65,7 +66,7 @@ const TabNavigation = ({ route }) => {
         tabBarInactiveTintColor: "#000000",
         tabBarStyle: {
           borderTopWidth: 0,
-          shadowColor: "red",
+          shadowColor: "#000000",
           shadowOffset: {
             width: 0,
             height: 12,
@@ -77,10 +78,7 @@ const TabNavigation = ({ route }) => {
           borderTopRightRadius: 50,
           backgroundColor: "#fff",
           position: "absolute",
-          bottom: 0,
-          padding: 10,
-          width: "100%",
-          height: 84,
+          height:60
         },
         headerShown: false,
         tabBarShowLabel: false,
@@ -97,7 +95,7 @@ const TabNavigation = ({ route }) => {
       />
       <Tab.Screen
         name="Notifications"
-        component={Checkout}
+        component={Notification}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Ionicons

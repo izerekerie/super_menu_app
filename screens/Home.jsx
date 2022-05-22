@@ -5,12 +5,14 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
+  StatusBar
 } from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 const Home = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar style="auto" />
       <View style={{ marginTop: 8 }}>
           <View
             style={{

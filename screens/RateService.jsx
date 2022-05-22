@@ -1,26 +1,27 @@
-import { View, Text } from "react-native";
+import { View, Text ,StatusBar} from "react-native";
 import React from "react";
 import { FontAwesome } from "@expo/vector-icons";
 const RateService = () => {
   return (
     <View style={{ backgroundColor: "#000", flex: 1, padding: 10 }}>
+       <StatusBar style="auto"/>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: 100,
+          marginTop: 70,
         }}
       >
         <Text
           style={{
-            padding: 10,
             justifyContent: "center",
             textAlign: "center",
             color: "#F7941D",
             fontSize: 18,
+            fontWeight:'bold'
           }}
         >
-          Yayy! We value all feedback, Please rate your expreience below:
+          Yayy! {'\n'} We value all feedback,{'\n'} Please rate your expreience {'\n'} below:
         </Text>
       </View>
 
@@ -29,7 +30,7 @@ const RateService = () => {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: 100,
+          marginTop: 70,
           padding: 10,
         }}
       >
@@ -69,7 +70,7 @@ const RateService = () => {
         style={{
           flexDirection: "row",
           justifyContent: "center",
-          marginTop: 80,
+          marginTop: 70,
         }}
       >
         <Text
@@ -79,9 +80,10 @@ const RateService = () => {
             textAlign: "center",
             color: "#F7941D",
             fontSize: 18,
+            fontWeight:'bold'
           }}
         >
-          Yayy! We value all feedback, Please rate your expreience below:
+          Yayy! We value all feedback,{'\n'} Please rate your expreience below:
         </Text>
       </View>
 

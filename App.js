@@ -8,6 +8,7 @@ import menuReducer from "./store/reducer/menu";
 import ReduxThunk from "redux-thunk";
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import { Provider } from 'react-redux';
+
 const rootReducer = combineReducers({
   auth: authReducer,
   serviceProvider:serviceProvider,
@@ -17,13 +18,14 @@ const rootReducer = combineReducers({
 const store = createStore(rootReducer, applyMiddleware(ReduxThunk));
 const App = () => {
   return (
-    <Provider store={store}>
+    
       <SafeAreaProvider>
+        <Provider store={store}>
         <Navigation />
-        {/* <Text>Open up App.js to start working on your app!</Text> */}
         <StatusBar style="auto" />
+        </Provider>
       </SafeAreaProvider>
-    </Provider>
+   
   );
 };
 
