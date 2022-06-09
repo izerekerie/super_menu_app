@@ -4,6 +4,7 @@ import {
   
   const initialState = {
     availableServiceProviders: [],
+    
   };
   
   export default (state = initialState, action) => {
