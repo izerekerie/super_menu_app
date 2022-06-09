@@ -77,6 +77,7 @@ const PaySuccess = ({ navigation }) => {
             borderRadius:10,
             marginVertical: 20,
           }}
+          onPress={() => navigation.navigate("RateService")}
         >
           <Text
             style={{

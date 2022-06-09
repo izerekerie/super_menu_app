@@ -6,7 +6,7 @@ import React,{useEffect,useState,useCallback} from 'react';
 import * as ServiceProviderAction from '../store/actions/serviceProvider';
 import filter from 'lodash.filter';
 
-const Search = () => {
+const Search = ({navigation}) => {
   
 const serviceProviders = useSelector(state => state.serviceProvider.availableServiceProviders);
 const dispatch = useDispatch();
@@ -20,9 +20,9 @@ const datas=[
   {name:'There',email:'sfa@gmail.com',address:'Kigali'}
 ]
 
-const [data, setData] = useState(datas);
+const [data, setData] = useState(serviceProviders);
 const [query, setQuery] = useState('');
-const [fullData, setFullData] = useState(datas);
+const [fullData, setFullData] = useState(serviceProviders);
 
 const loadServiceProvider = useCallback(async () => {
   setError(null);
@@ -43,7 +43,6 @@ const handleSearch = text => {
   const filteredData = filter(fullData, serviceProvider => {
     return contains(serviceProvider, formattedQuery);
   });
-  // console.log("filtered data ",filteredData);
       setData(filteredData);
       setQuery(text);
 };
@@ -60,17 +59,17 @@ const contains = (productService, query) => {
 };
 
 
-// useEffect(() => {
-//   setIsLoading(true);
-//   loadServiceProvider().then(() => {
-//     setIsLoading(false);
-//   });
-// }, [dispatch, loadServiceProvider]);
+useEffect(() => {
+  setIsLoading(true);
+  loadServiceProvider().then(() => {
+    setIsLoading(false);
+  });
+}, [dispatch, loadServiceProvider]);
 
 if (isLoading) {
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <ActivityIndicator size="large" color={colors.Orange} />
+      <ActivityIndicator size="large" color={'#F7941D'} />
     </View>
   );
 }
@@ -101,7 +100,7 @@ if (isLoading) {
             <ScrollView style={{paddingHorizontal:20}}>
               {data.map((item, index)=>{
                 return(
-                  <RestResult key={index} name={item.name} email={item.email} address={item.address}/>
+                  <RestResult key={index} name={item.name} email={item.email} address={item.address} navigation={navigation}/>
                 )
               })}
             </ScrollView>

@@ -107,7 +107,7 @@ const Login = ({ navigation }) => {
                 <View>
                   <Pressable
                     style={styles.button}
-                    onPress={()=>navigation.navigate("TabNavigation")}
+                    onPress={()=>handleSubmit(values)}
                   >
                     <Text style={{ paddingTop: 5, color: "white" }}>
                       Sign In

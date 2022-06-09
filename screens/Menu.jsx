@@ -1,6 +1,8 @@
-import { View, StyleSheet,Text,SafeAreaView,FlatList ,Image} from 'react-native'
-import React from 'react'
+import { View, StyleSheet,Text,SafeAreaView,FlatList ,Image,ActivityIndicator} from 'react-native'
+import React,{useEffect,useState,useCallback} from 'react';
 import MenuItem from '../components/MenuItem';
+import { fetchMenu, fetchMenuByServiceProvider } from '../store/actions/menu';
+import { useDispatch , useSelector } from 'react-redux';
 const Menu = () => {
 
   const menuList=[
@@ -8,11 +10,39 @@ const Menu = () => {
     {id:2,name: 'Starter'},
     {id:3,name: 'Dessert'},
     {id:4,name: 'Drink'},
-    {id:1,name: 'Appetizer'},
-    {id:2,name: 'Starter'},
-    {id:3,name: 'Dessert'},
-    {id:4,name: 'Drink'},
   ]
+  const menu = useSelector(state => state.menu.menu_by_serviceprovider);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+const [isRefreshing, setIsRefreshing] = useState(false);
+const [error, setError] = useState();
+console.log("from the reducer :",menu);
+  const loadMenu = useCallback(async () => {
+    setError(null);
+    setIsRefreshing(true);
+    try {
+      await dispatch(fetchMenuByServiceProvider());
+    } catch (err) {
+      console.log(err.message);
+      setError(err.message);
+    }
+    setIsRefreshing(false);
+  }, [dispatch, setIsLoading, setError]);
+
+  useEffect(() => {
+    setIsLoading(true);
+    loadMenu().then(() => {
+      setIsLoading(false);
+    });
+  }, [dispatch, loadMenu]);
+  
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={'#F7941D'} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',margin:20}}>
@@ -35,7 +65,7 @@ const Menu = () => {
       </View>
 
     <FlatList
-    data={menuList}
+    data={menu}
     keyExtractor={(item=>item.id)}
     showsVerticalScrollIndicator={false}
     renderItem={({item})=><MenuItem data={item}/>}

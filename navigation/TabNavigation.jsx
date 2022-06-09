@@ -13,6 +13,7 @@ import Home from "../screens/Home";
 import Order from "../screens/Order";
 import RateService from "../screens/RateService";
 import Notification from "../screens/Notification";
+import UnknownScreen from "../screens/UnknownScreen";
 
 const Stack = createStackNavigator();
 
@@ -32,6 +33,11 @@ const Cart = () =>{
       <Stack.Screen
         name="paySuccess"
         component={PaySuccess}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RateService"
+        component={RateService}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -121,7 +127,7 @@ const TabNavigation = ({ route }) => {
       />
       <Tab.Screen
         name="Timer"
-        component={RateService}
+        component={UnknownScreen}
         options={{
           tabBarIcon: ({ color, size }) => (
             <Entypo name="back-in-time" size={size} color={color} />
