@@ -25,7 +25,8 @@ export const fetchMenuByServiceProvider = () => {
       try {
           const menu = await axios.get(`${baseUrl}/menu-categories/listAll/service-provider/2`);
           const resData = menu.data;
-        //   console.log(resData);
+          const array = resData;
+          
             dispatch({
               type: SET_MENU_BY_SERVICEPROVIDER,
               menu: resData,

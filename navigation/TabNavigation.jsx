@@ -40,6 +40,11 @@ const Cart = () =>{
         component={RateService}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="Menu"
+        component={Menu}
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -55,6 +60,26 @@ const SearchStack = () =>{
       <Stack.Screen
         name="Menu"
         component={Menu}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="order"
+        component={Order}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Checkout"
+        component={Checkout}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="paySuccess"
+        component={PaySuccess}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="RateService"
+        component={RateService}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

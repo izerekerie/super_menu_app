@@ -5,12 +5,125 @@ import {
   SafeAreaView,
   Image,
   Pressable,
+  ScrollView,
+  ActivityIndicator
 } from "react-native";
-import React from "react";
+import React,{useState} from "react";
 import { Ionicons, Fontisto } from "@expo/vector-icons";
 import { StatusBar } from "expo-status-bar";
+import { useDispatch } from "react-redux";
+import * as orderActions from "../store/actions/order";
 
-const Checkout = ({ navigation }) => {
+const Checkout = ({ navigation, route }) => {
+  const { totalPrice,orderItems  } = route.params;
+  const [clicedType, setClickedType] = useState({});
+  const [isTypeSelected, setIsTypeSelected] = useState(true);
+
+  const paymentType =[
+    {
+      name: "Cash",
+      image: require("./../assets/cash.png"),
+      type: "mobile & cash",
+      telecom:""
+    }
+    ,
+    {
+      name: "MTN Mobile money",
+      image: require("./../assets/mtn.png"),
+      type: "mobile & cash",
+      telecom:"MTN"
+    }
+    ,
+    {
+      name: "Card",
+      image: require("./../assets/mtn.png"),
+      type: "card",
+      telecom:""
+    }
+    ,
+    {
+      name: "TIGO cash",
+      image: require("./../assets/mtn.png"),
+      type: "mobile & cash",
+      telecom:"TIGO"
+    }
+    ,
+    {
+      name: "AIRTEL money",
+      image: require("../assets/aitel.png"),
+      type: "mobile & cash",
+      telecom:"AIRTEL"
+    }
+  ]
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(-1);
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState(null);
+
+  const dispatch = useDispatch();
+  const handleSubmit= async(clickedType) =>{
+    
+    let data = {};
+      if (clickedType.telecom !== "") {
+        
+       data= {
+          msisdn: "250786621407",
+          orderInfo: 2,
+          regChannel: "USSD",
+          telecom: clickedType.telecom,
+        }
+
+        try {
+         
+          await dispatch(orderActions.paywithmomo(data));
+            navigation.navigate("paySuccess")
+        } catch (err) {
+          if (err.response) {
+            setLoading(false);
+          } else {
+            setErrortext(err.message);
+            setLoading(false);
+          }
+        }
+      }else{
+        data={
+          orderInfo: 2,
+          regChannel: "USSD"
+        }
+        if (clickedType.name=="Card") {
+          try {
+            await dispatch(orderActions.paywithcard(data));
+              navigation.navigate("paySuccess")
+          } catch (err) {
+            if (err.response) {
+              setLoading(false);
+            } else {
+              setErrortext(err.message);
+              setLoading(false);
+            }
+          }
+        }else{
+          try {
+            await dispatch(orderActions.paywithcash(data));
+              navigation.navigate("paySuccess")
+          } catch (err) {
+            if (err.response) {
+              setLoading(false);
+            } else {
+              setErrortext(err.message);
+              setLoading(false);
+            }
+          }
+        }
+      }
+  }
+
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={'#F7941D'} />
+      </View>
+    );
+  }
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor="#fff" />
@@ -28,7 +141,7 @@ const Checkout = ({ navigation }) => {
           </View>
           <View>
             <Text style={[styles.bigText, { color: "#25d482" }]}>
-              Frw 16,000
+              Frw {totalPrice}
             </Text>
             <Text style={{ color: "#ccc" }}>Including VAT (18%)</Text>
           </View>
@@ -82,48 +195,39 @@ const Checkout = ({ navigation }) => {
           </Text>
         </View>
       </View>
-
-      <View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            marginTop: 40,
-          }}
-        >
-          <Image source={require("../assets/mtn.png")} />
-          <Text>MTN Mobile Money</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            marginTop: 10,
-          }}
-        >
-          <Image source={require("../assets/aitel.png")} />
-          <Text>Airtel Money</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-around",
-            marginTop: 10,
-          }}
-        >
-          <Image source={require("../assets/cash.png")} />
-          <Text>Airtel Money</Text>
-        </View>
+      <View style={{marginTop:'10%'}}>
+        <ScrollView style={{height:350}}>
+        {paymentType.map((item, index) => {
+          return (
+            <Pressable
+            key={index}
+            onPress={() => {setClickedType(item); setSelectedAddressIndex(index); setIsTypeSelected(false) }}
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-around",
+              marginTop: 40,
+              backgroundColor: selectedAddressIndex == index? "#ccc" : "#fff",
+              alignItems: "center",
+              marginHorizontal:20
+            }}
+          >
+            <Image source={item.image} />
+            <Text>{item.name}</Text>
+          </Pressable>
+          );
+        })}
+        </ScrollView>
+        
 
         <View style={{ margin: 20 }}>
           <Text style={{ textAlign: "center", fontSize: 14, color: "#ccc" }}>
             We will send you an order details to your email after the successful
             payment
           </Text>
-          <Pressable onPress={() => navigation.navigate("paySuccess")}>
+          <Pressable  disabled={isTypeSelected} onPress={()=>handleSubmit(clicedType)}>
             <View
               style={{
-                backgroundColor: "#25d482",
+                backgroundColor: isTypeSelected? "#ccc": "#25d482" ,
                 flexDirection: "row",
                 justifyContent: "center",
                 height: 50,

@@ -3,7 +3,8 @@ import { AntDesign } from '@expo/vector-icons';
 import React from 'react'
 import OrderDeals from '../components/OrderDeals';
 
-const Order = ({navigation}) => {
+const Order = ({navigation,route}) => {
+  const { items } = route.params;
   return (
     <ScrollView style={styles.all}>
       <StatusBar style="auto" backgroundColor={'#ffffff'} />
@@ -12,7 +13,7 @@ const Order = ({navigation}) => {
         </View>
       <Text style={styles.restName}>Choose Kigali</Text>
       <Text style={styles.type}>Drinks</Text>
-      <OrderDeals navigation={navigation}/>
+      <OrderDeals navigation={navigation} OrderItems={items}/>
     </ScrollView>
     
   )

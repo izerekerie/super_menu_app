@@ -39,4 +39,3 @@ export const signin = (data) => {
       dispatch({ type:SIGNIN , token, user});
   };
 };
-

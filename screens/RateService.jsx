@@ -1,7 +1,54 @@
-import { View, Text ,StatusBar} from "react-native";
-import React from "react";
+import { View, Text ,StatusBar, Alert,ActivityIndicator} from "react-native";
+import React,{useState} from "react";
 import { FontAwesome } from "@expo/vector-icons";
-const RateService = () => {
+import { rate } from "../store/actions/rating";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+const RateService = ({navigation}) => {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+  const [isProceed, setProceed] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errortext, setErrortext] = useState(null);
+  const [rating, setRating] = useState(0);
+
+  const handleRate = async (score) => {
+    setRating(score);
+    setLoading(true);
+    const data ={
+      reviewComment: "string",
+      score: score,
+      serviceProvider: 1,
+      status: "PENDING",
+      userId: user.id
+    }
+    
+    try {
+      
+      await dispatch(rate(data));
+      Alert.alert(
+        "Rating",
+        "Thanks for your feedback",
+        [{ text: "Ok", onPress: () => navigation.navigate("Search") }],
+        { cancelable: false }
+      );
+    } catch (err) {
+      if (err.response) {
+        setLoading(false);
+      } else {
+        setErrortext(err.message);
+        setLoading(false);
+      }
+    }
+  };
+  if (loading) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color={'#F7941D'} />
+      </View>
+    );
+  }
+
   return (
     <View style={{ backgroundColor: "#000", flex: 1, padding: 10 }}>
        <StatusBar style="auto"/>
@@ -37,32 +84,37 @@ const RateService = () => {
         <FontAwesome
           name="star"
           size={30}
-          color="#F7941D"
+          color={rating>=1? "#F7941D": "#ffffff"}
           style={{ padding: 10 }}
+          onPress={() => handleRate(1)}
         />
         <FontAwesome
           name="star"
           size={30}
-          color="#F7941D"
+          color={rating >=2? "#F7941D": "#ffffff"}
           style={{ padding: 10 }}
+          onPress={() => handleRate(2)}
         />
         <FontAwesome
           name="star"
           size={30}
-          color="#F7941D"
+          color={rating >=3?"#F7941D": "#ffffff"}
           style={{ padding: 10 }}
+          onPress={() => handleRate(3)}
         />
         <FontAwesome
           name="star"
           size={30}
-          color="#fff"
+          color={rating>=4?"#F7941D":"#fff"}
           style={{ padding: 10 }}
+          onPress={() => handleRate(4)}
         />
         <FontAwesome
           name="star"
           size={30}
-          color="#fff"
+          color={rating>=5 ? "#F7941D":"#fff"}
           style={{ padding: 10 }}
+          onPress={() => handleRate(5)}
         />
       </View>
 
@@ -86,7 +138,6 @@ const RateService = () => {
           Yayy! We value all feedback,{'\n'} Please rate your expreience below:
         </Text>
       </View>
-
       <View
         style={{
           flexDirection: "row",

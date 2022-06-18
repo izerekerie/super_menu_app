@@ -11,69 +11,52 @@ import { AntDesign } from "@expo/vector-icons";
 import InputSpinner from "react-native-input-spinner";
 import React from "react";
 
-const OrderDeals = ({navigation}) => {
-  const prodDetails = [
-    {
-      id: "1",
-      list: "Kaffe Lime Vodka, Lemongrass, Ginger, citrus",
-      name: "Tom Yummy",
-      value: "12.5",
-      price: "5000",
-      image: require("./../assets/restaurant.jpg"),
-    },
-    {
-      id: "2",
-      list: "Grit, Grenadine, Citrus, Cocomber",
-      name: "Singapore Sling",
-      value: "12.5",
-      price: "5000",
-      image: require("./../assets/cocktail.jpg"),
-    },
-    {
-      id: "3",
-      list: "Vanilla, Coffee and chocolate with hints of orange",
-      name: "White Russian",
-      value: "12.5",
-      price: "6000",
-      image: require("./../assets/vin.jpg"),
-    },
-    {
-      id: "4",
-      list: "Grit, Grenadine, Citrus, Cocomber",
-      name: "Singapore Sling",
-      value: "12.5",
-      price: "5000",
-      image: require("./../assets/restaurant.jpg"),
-    },
-    // {id: "5", list: "Vanilla, Coffee and chocolate with hints of orange", name: "White Russian", value: "12.5",price:"6,000", image:'./../assets/restaurant.jpg' }
-  ];
-  let sum = 0;
-  for (let index = 0; index < prodDetails.length; index++) {
-    sum = sum + parseInt(prodDetails[index].price);
+const OrderDeals = ({ navigation, OrderItems }) => {
+
+  const transformedItem = [];
+  for (const key in OrderItems) {
+    transformedItem.push({
+      itemId: key,
+      itemName: OrderItems[key].name,
+      description: OrderItems[key].description,
+      displayPriority: OrderItems[key].displayPriority,
+      unitPrice: OrderItems[key].unitPrice,
+      quantity: 1,
+      totalPrice: OrderItems[key].unitPrice,
+    });
   }
-  // sum = prodDetails[0].price;
+
+  const [newItems, setNewItems] = React.useState(transformedItem);
+  
+  const [count, setCount] = React.useState(0);
+  let sum = 0;
+  for (let index = 0; index < newItems.length; index++) {
+    sum = sum + parseInt(newItems[index].totalPrice);
+  }
   const onPress = () => setCount(count + 1);
   return (
     <View>
-      {prodDetails.map((prodDetail, index) => {
+      {newItems.map((prodDetail, index) => {
         return (
           <View key={index}>
             <View style={styles.results}>
               <View style={{ flexDirection: "row" }}>
                 <Image
                   style={styles.restImg}
-                  source={prodDetail.image}
+                  source={require("./../assets/restaurant.jpg")}
                   resizeMode="cover"
                 />
                 <View style={styles.textsStyle}>
                   <View>
-                    <Text style={styles.listStyle}>{prodDetail.list}</Text>
+                    <Text style={styles.listStyle}>
+                      {prodDetail.description}
+                    </Text>
                     <Text style={styles.nameValStyle}>
-                      {prodDetail.name} - {prodDetail.value}
+                      {prodDetail.itemName} - {prodDetail.displayPriority}
                     </Text>
                     <View style={{ flexDirection: "row" }}>
                       <Text style={styles.priceStyle}>
-                        Rwf {prodDetail.price}
+                        Rwf {prodDetail.totalPrice}
                       </Text>
                       <InputSpinner
                         step={1}
@@ -82,6 +65,7 @@ const OrderDeals = ({navigation}) => {
                         color={"#ffffff"}
                         textColor={"black"}
                         height={30}
+                        value={prodDetail.quantity}
                         width={75}
                         showBorder={true}
                         shadow={false}
@@ -89,7 +73,17 @@ const OrderDeals = ({navigation}) => {
                         background={"#ffffff"}
                         buttonFontSize={15}
                         onChange={(num) => {
-                          console.log(num);
+                          setNewItems(
+                            [...newItems].map((object) => {
+                              if (object.itemId === prodDetail.itemId) {
+                                return {
+                                  ...object,
+                                  quantity: num,
+                                  totalPrice: object.unitPrice * num,
+                                };
+                              } else return object;
+                            })
+                          );
                         }}
                         style={styles.numericinput}
                       />
@@ -121,7 +115,15 @@ const OrderDeals = ({navigation}) => {
         <Text style={styles.totalText}>Total</Text>
         <Text style={styles.totalprice}>Frw {sum}</Text>
       </View>
-      <Pressable style={styles.checkoutbutton} onPress={()=>navigation.navigate('Checkout')}>
+      <Pressable
+        style={styles.checkoutbutton}
+        onPress={() =>
+          navigation.navigate("Checkout", {
+            orderItems: newItems,
+            totalPrice: sum,
+          })
+        }
+      >
         <Text style={styles.chekouttext}>Proceed with checkout</Text>
       </Pressable>
     </View>
@@ -173,10 +175,10 @@ const styles = StyleSheet.create({
     marginTop: 30,
   },
   morebutton: {
-    justifyContent:'center',
-    width: '100%',
+    justifyContent: "center",
+    width: "100%",
     flexDirection: "row",
-    marginVertical:10
+    marginVertical: 10,
   },
   backIcon: {
     marginRight: 4,
@@ -189,8 +191,8 @@ const styles = StyleSheet.create({
   },
   total: {
     flexDirection: "row",
-    justifyContent:'space-between',
-    marginVertical:20
+    justifyContent: "space-between",
+    marginVertical: 20,
   },
   totalText: {
     fontWeight: "bold",
@@ -204,7 +206,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
     backgroundColor: "#F7941D",
     borderRadius: 9,
-    justifyContent:'center'
+    justifyContent: "center",
   },
   chekouttext: {
     color: "white",

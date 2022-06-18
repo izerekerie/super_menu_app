@@ -2,12 +2,7 @@ import { SET_MENU, SET_MENU_BY_SERVICEPROVIDER } from "../actions/menu";
 
 const initialState = {
   menu: [],
-  menu_by_serviceprovider: [{
-    category:{
-        items:[]
-      }
-  }
-  ],
+  menu_by_serviceprovider: [],
 };
 
 export default (state = initialState, action) => {
@@ -17,9 +12,7 @@ export default (state = initialState, action) => {
         menu: action.menu,
         menu_by_serviceprovider: []
       };
-    case SET_MENU:
-      menu_by_serviceprovider = action.menu;
-      console.log("from the reducer :",menu_by_serviceprovider);
+    case SET_MENU_BY_SERVICEPROVIDER:
       return {
         menu: [],
         menu_by_serviceprovider: action.menu,

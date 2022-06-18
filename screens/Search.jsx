@@ -10,20 +10,15 @@ const Search = ({navigation}) => {
   
 const serviceProviders = useSelector(state => state.serviceProvider.availableServiceProviders);
 const dispatch = useDispatch();
-const [isLoading, setIsLoading] = useState(false);
+// const [isLoading, setIsLoading] = useState(false);
 const [isRefreshing, setIsRefreshing] = useState(false);
 const [error, setError] = useState();
 
-const datas=[
-  {name:'This',email:'sfa@gmail.com',address:'Kigali'},
-  {name:'That',email:'sfa@gmail.com',address:'Kigali'},
-  {name:'There',email:'sfa@gmail.com',address:'Kigali'}
-]
 
-const [data, setData] = useState(serviceProviders);
+
+const [data, setData] = useState([]);
 const [query, setQuery] = useState('');
-const [fullData, setFullData] = useState(serviceProviders);
-
+const [fullData, setFullData] = useState([]);
 const loadServiceProvider = useCallback(async () => {
   setError(null);
   setIsRefreshing(true);
@@ -41,8 +36,11 @@ const loadServiceProvider = useCallback(async () => {
 const handleSearch = text => {
   const formattedQuery = text;
   const filteredData = filter(fullData, serviceProvider => {
+    
     return contains(serviceProvider, formattedQuery);
   });
+  
+ 
       setData(filteredData);
       setQuery(text);
 };
@@ -58,13 +56,17 @@ const contains = (productService, query) => {
   return false;
 };
 
-
 useEffect(() => {
   setIsLoading(true);
   loadServiceProvider().then(() => {
+    setData(serviceProviders);
+    setFullData(serviceProviders);
     setIsLoading(false);
   });
 }, [dispatch, loadServiceProvider]);
+
+
+const [isLoading, setIsLoading] = useState(false);
 
 if (isLoading) {
   return (
@@ -100,7 +102,7 @@ if (isLoading) {
             <ScrollView style={{paddingHorizontal:20}}>
               {data.map((item, index)=>{
                 return(
-                  <RestResult key={index} name={item.name} email={item.email} address={item.address} navigation={navigation}/>
+                  <RestResult key={index} name={item.name} email={item.email} address={item.address} navigation={navigation} serviceProviderId = {item.id}/>
                 )
               })}
             </ScrollView>

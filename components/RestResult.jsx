@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image,TouchableOpacity } from "react-native";
 import React from "react";
 
-const RestResult = ({ name, address, email,navigation }) => {
+const RestResult = ({ name, address, email,navigation,serviceProviderId }) => {
   return (
-    <TouchableOpacity onPress={()=>navigation.navigate('Menu')}>
+    <TouchableOpacity onPress={()=>navigation.navigate('Menu',{serviceProvider: serviceProviderId})}>
       <View style={styles.results}>
           <Image
             style={styles.restImg}
